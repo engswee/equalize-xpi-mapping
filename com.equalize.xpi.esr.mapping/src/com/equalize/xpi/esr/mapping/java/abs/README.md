@@ -8,7 +8,9 @@ http://scn.sap.com/docs/DOC-54921
 Customxxx2yyy.java are the implementations for corresponding abstract class Abstractxxx2yyy.java
 
 Sample input file for CustomPlain2xxx implementations
-https://github.com/engswee/equalize-xpi-mapping/blob/master/com.equalize.xpi.esr.mapping.tester/TestData/Abstract/InputPlain.txt
+
+https://github.com/engswee/equalize-xpi-tester/blob/master/com.equalize.xpi.tester/TestData/Mapping/Java/Abstract/InputPlain.txt
 
 Sample input file for CustomDOM2xxx implementations
-https://github.com/engswee/equalize-xpi-mapping/blob/master/com.equalize.xpi.esr.mapping.tester/TestData/Abstract/InputDOM.xml
+
+https://github.com/engswee/equalize-xpi-tester/blob/master/com.equalize.xpi.tester/TestData/Mapping/Java/Abstract/InputDOM.xml
