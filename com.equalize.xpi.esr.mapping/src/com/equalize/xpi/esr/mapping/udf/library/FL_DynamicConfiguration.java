@@ -44,8 +44,8 @@ public class FL_DynamicConfiguration  {
 		if (attribute.equals("") ) {
 			throw new RuntimeException("Dynamic Configuration attribute not populated");
 		}
-
-		DynamicConfiguration conf = (DynamicConfiguration) container.getTransformationParameters().get(StreamTransformationConstants.DYNAMIC_CONFIGURATION);
+		Map<String, Object> all = container.getInputHeader().getAll();
+        DynamicConfiguration conf = (DynamicConfiguration) all.get(StreamTransformationConstants.DYNAMIC_CONFIGURATION);
 
 		if (conf != null) { 
 			// Key
@@ -72,8 +72,8 @@ public class FL_DynamicConfiguration  {
 		if (attribute.equals("") ) {
 			throw new RuntimeException("Dynamic Configuration field not populated");
 		}
-
-		DynamicConfiguration conf = (DynamicConfiguration) container.getTransformationParameters().get(StreamTransformationConstants.DYNAMIC_CONFIGURATION);
+		Map<String, Object> all = container.getInputHeader().getAll();
+		DynamicConfiguration conf = (DynamicConfiguration) all.get(StreamTransformationConstants.DYNAMIC_CONFIGURATION);
 
 		if (conf != null) { 
 			// Key
