@@ -229,4 +229,23 @@ public class FL_TextPool  {
 			throw new StreamTransformationException("UnsupportedEncodingException: " + e.getMessage(), e);
 		}
 	}
+	
+	@LibraryMethod(title = "createCSVField", description = "Create the content in CSV format", category = "FL_TextPool", type = ExecutionType.SINGLE_VALUE)
+	public String createCSVField(@Argument(title = "Input String") String input,
+			@Parameter(title = "Delimiter character") String delimiter,
+			@Parameter(title = "Enclosure Sign character") String enclosureSign,
+			Container container) throws StreamTransformationException {
+
+		if (input.contains(delimiter) || input.contains(delimiter)) {
+			String output = input;
+			if (output.contains(enclosureSign)) {
+				output = output.replaceAll(enclosureSign, enclosureSign
+						+ enclosureSign);
+			}
+			return enclosureSign + output + enclosureSign;
+		} else {
+			return input;
+		}
+
+	}
 }

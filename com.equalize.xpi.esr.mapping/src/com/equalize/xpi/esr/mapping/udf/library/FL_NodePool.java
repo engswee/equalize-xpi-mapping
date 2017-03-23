@@ -1,9 +1,12 @@
 package com.equalize.xpi.esr.mapping.udf.library;
 
+import java.util.ArrayList;
+
 import com.sap.aii.mapping.api.StreamTransformationException;
 import com.sap.aii.mappingtool.tf7.rt.Container;
 import com.sap.aii.mappingtool.tf7.rt.GlobalContainer;
 import com.sap.aii.mappingtool.tf7.rt.ResultList;
+import com.sap.ide.esr.tools.mapping.core.Argument;
 import com.sap.ide.esr.tools.mapping.core.Cleanup;
 import com.sap.ide.esr.tools.mapping.core.ExecutionType;
 import com.sap.ide.esr.tools.mapping.core.Init;
@@ -48,5 +51,42 @@ public class FL_NodePool {
 			}
 		}
 		
+	}
+	@LibraryMethod(title="useOneAsManyWithEmptyContext", description="Use one as many, accepting null/empty contexts", category="FL_Node", type=ExecutionType.ALL_VALUES_OF_QUEUE) 
+	public void useOneAsManyWithEmptyContext (
+		@Argument(title="Parent Items to be repeated")  String[] parentList,
+		@Argument(title="Context")  String[] contextList,
+		@Argument(title="Child items")  String[] childList,
+		 ResultList result,
+		 Container container)  throws StreamTransformationException{
+		
+		
+		ArrayList<String> parentContentsWithoutCC = new ArrayList<String>();
+		ArrayList<String> parentItemsPerContext = new ArrayList<String>();
+		int parentListCounter = 0;				
+		int contextCounter = 0;
+		
+		for(String parentItem: parentList) {
+			if(!parentItem.equals(ResultList.CC)) {
+				parentContentsWithoutCC.add(parentItem);
+			}
+		}
+		
+		for(String contextItem: contextList) {
+			if(!contextItem.equals(ResultList.CC)) {
+				parentItemsPerContext.add(parentContentsWithoutCC.get(parentListCounter));
+			} else {
+				parentListCounter++;
+			}
+		}
+		
+		for(int i = 0; i < childList.length; i++) {
+			if(childList[i].equals(ResultList.CC)) {
+				result.addContextChange();
+			} else {
+				result.addValue(parentItemsPerContext.get(contextCounter));
+				contextCounter++;
+			}
+		}
 	}
 }
