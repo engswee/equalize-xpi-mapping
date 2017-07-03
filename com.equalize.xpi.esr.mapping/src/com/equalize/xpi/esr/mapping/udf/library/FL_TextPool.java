@@ -7,6 +7,7 @@ import java.util.*;
 import com.sap.aii.mappingtool.tf7.rt.*;
 import com.sap.aii.mapping.lookup.*;
 import java.lang.reflect.*;
+import java.net.URI;
 
 import javax.xml.bind.DatatypeConverter;
 
@@ -165,6 +166,18 @@ public class FL_TextPool  {
 		converted = converted.replaceAll("[?]", "%3F");
 
 		return converted;
+	}
+	
+	@LibraryMethod(title="encodeQueryString", description="", category="User-Defined", type=ExecutionType.SINGLE_VALUE) 
+	public String encodeQueryString (
+			@Argument(title="Input Query String")  String queryString,
+			Container container)  throws StreamTransformationException{
+		try {
+			URI uri = new URI(null, null, null, -1, null, queryString, null);
+			return uri.toString().replace("?", "");
+		} catch (Exception e) {
+			throw new StreamTransformationException(e.getMessage());
+		}
 	}
 
 	@LibraryMethod(title="getLastChar", description="Get last n characters of input", category="FL_TextPool", type=ExecutionType.SINGLE_VALUE) 
