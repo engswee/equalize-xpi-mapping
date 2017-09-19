@@ -1,9 +1,9 @@
 package com.equalize.xpi.esr.mapping.java.abs;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.LineNumberReader;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
@@ -64,13 +64,13 @@ public abstract class AbstractMappingBase {
 	}
 
 	protected ArrayList<String> parsePlainInput (InputStream inStream) throws Exception {
-		BufferedReader br = new BufferedReader(new InputStreamReader(inStream));		
+		LineNumberReader lnr = new LineNumberReader(new InputStreamReader(inStream));		
 		String lineContent;
 		ArrayList<String> contents = new ArrayList<String>(10);
-		while ((lineContent = br.readLine()) != null) {
+		while ((lineContent = lnr.readLine()) != null) {
 			contents.add(lineContent);
 		}
-		br.close();
+		lnr.close();
 		return contents;
 	}
 
@@ -130,13 +130,13 @@ public abstract class AbstractMappingBase {
 	}
 
 	private InputStream collapseIndentedXMLStream (InputStream inStream) throws Exception {
-		BufferedReader br = new BufferedReader(new InputStreamReader(inStream)); 
+		LineNumberReader lnr = new LineNumberReader(new InputStreamReader(inStream)); 
 		StringBuilder sb = new StringBuilder();
 		String lineContent;
-		while ((lineContent = br.readLine()) != null) {
+		while ((lineContent = lnr.readLine()) != null) {
 			sb.append(lineContent);
 		}
-		br.close();
+		lnr.close();
 		// Remove all whitespaces between > and  <
 		String consolidatedLine = sb.toString().replaceAll(">\\W+<", "><");
 		return new ByteArrayInputStream(consolidatedLine.getBytes());

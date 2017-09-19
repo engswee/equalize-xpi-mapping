@@ -179,6 +179,18 @@ public class FL_TextPool  {
 			throw new StreamTransformationException(e.getMessage());
 		}
 	}
+	
+	@LibraryMethod(title="decodeQueryString", description="", category="User-Defined", type=ExecutionType.SINGLE_VALUE) 
+	public String decodeQueryString (
+			@Argument(title="Input Query String")  String queryString,
+			Container container)  throws StreamTransformationException{
+		try {
+			URI uri = new URI("http://localhost?" + queryString);
+			return uri.getQuery();
+		} catch (Exception e) {
+			throw new StreamTransformationException(e.getMessage());
+		}
+	}
 
 	@LibraryMethod(title="getLastChar", description="Get last n characters of input", category="FL_TextPool", type=ExecutionType.SINGLE_VALUE) 
 	public String getLastChar (
