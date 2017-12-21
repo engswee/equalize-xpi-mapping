@@ -66,8 +66,8 @@ public class FL_DateTimePool  {
 		return formatter.print(toDateTime);
 	}
 	
-	@LibraryMethod(title="convertTimestampToEpochTime", description="Convert input time to milliseconds from Epoch, 1 Jan 1970", category="FL_DateTime", type=ExecutionType.SINGLE_VALUE) 
-	public String convertTimestampToEpochTime(
+	@LibraryMethod(title="convertUTCTimeToEpochMillisecs", description="Convert UTC time to milliseconds from Epoch (1 Jan 1970)", category="FL_DateTime", type=ExecutionType.SINGLE_VALUE) 
+	public String convertUTCTimeToEpochMillisecs(
 			@Argument(title="Input timestamp") String timestamp,
 			Container container) throws StreamTransformationException{
 		try {
@@ -77,12 +77,22 @@ public class FL_DateTimePool  {
 			// 2017-10-01T00:00:00
 			// 9999-12-31T00:00:00
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
-			Date inputDate = sdf.parse(timestamp + "-0000"); // Include UTC indicator
+			Date inputDate = sdf.parse(timestamp + "+0000"); // Include UTC indicator
 			// Retrieve milliseconds since January 1, 1970, 00:00:00 GMT which represents Epoch time
 			long millisecsSinceEpoch = inputDate.getTime();
 			return Long.toString(millisecsSinceEpoch);
 		} catch (ParseException e) {
 			throw new StreamTransformationException(e.getMessage());
 		}
+	}
+
+	@LibraryMethod(title="convertEpochMillisecsToUTCTime", description="Convert milliseconds from Epoch to UTC time", category="FL_DateTime", type=ExecutionType.SINGLE_VALUE) 
+	public String convertEpochMillisecsToUTCTime(
+			@Argument(title="Input milliseconds since Epoch") String millisecsSinceEpoch,
+			Container container) throws StreamTransformationException{
+		Date date = new Date(Long.parseLong(millisecsSinceEpoch));
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+		return sdf.format(date);
 	}
 }
