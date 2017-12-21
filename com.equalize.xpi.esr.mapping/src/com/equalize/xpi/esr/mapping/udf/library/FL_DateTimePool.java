@@ -1,8 +1,13 @@
 package com.equalize.xpi.esr.mapping.udf.library;
 
 import com.sap.aii.mapping.api.*;
+
 import java.io.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
+
 import com.sap.aii.mappingtool.tf7.rt.*;
 import com.sap.aii.mapping.lookup.*;
 import java.lang.reflect.*;
@@ -59,5 +64,25 @@ public class FL_DateTimePool  {
 		DateTime fromDateTime = new DateTime(DateTime.parse(timestamp, formatter), originalTZ);
 		DateTime toDateTime = fromDateTime.withZone(DateTimeZone.forID(toTZ));
 		return formatter.print(toDateTime);
+	}
+	
+	@LibraryMethod(title="convertTimestampToEpochTime", description="Convert input time to milliseconds from Epoch, 1 Jan 1970", category="FL_DateTime", type=ExecutionType.SINGLE_VALUE) 
+	public String convertTimestampToEpochTime(
+			@Argument(title="Input timestamp") String timestamp,
+			Container container) throws StreamTransformationException{
+		try {
+			// Sample input timestamps
+			// 1900-01-01T00:00:00
+			// 2014-09-22T00:00:00
+			// 2017-10-01T00:00:00
+			// 9999-12-31T00:00:00
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+			Date inputDate = sdf.parse(timestamp + "-0000"); // Include UTC indicator
+			// Retrieve milliseconds since January 1, 1970, 00:00:00 GMT which represents Epoch time
+			long millisecsSinceEpoch = inputDate.getTime();
+			return Long.toString(millisecsSinceEpoch);
+		} catch (ParseException e) {
+			throw new StreamTransformationException(e.getMessage());
+		}
 	}
 }
